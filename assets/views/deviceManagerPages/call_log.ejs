@@ -1,0 +1,47 @@
+<div class="ui segment">
+    <div class="ui secondary menu">
+        <div class="ui form" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <div class="field" style="margin:0;">
+                <label style="font-size:12px; color:#666;">From</label>
+                <input type="date" id="callFromDate" default="<%= pageData[0]?.date %>" style="padding:6px 8px; border:1px solid #ddd; border-radius:4px;">
+            </div>
+            <div class="field" style="margin:0;">
+                <label style="font-size:12px; color:#666;">To</label>
+                <input type="date" id="callToDate" style="padding:6px 8px; border:1px solid #ddd; border-radius:4px;">
+            </div>
+        </div>
+        <div class="right menu">
+            <button onclick="updateButton(this, '0xC3V', { from: Date.parse($('#callFromDate').val()) / 1000, to: isNaN(Date.parse($('#callToDate').val()) / 1000) ? Math.floor(Date.now() / 1000) : Math.floor(Date.parse($('#callToDate').val()) / 1000) })" class="ui blue button">
+                <i class="icon sync"></i>Update
+            </button>
+        </div>
+    </div>
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Phone Number</th>
+                <th>Status</th>
+                <th>Duration</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% pageData.forEach((callData) => { 
+                let date = new Date(parseInt(callData.timestamp));
+                let status = "UNKNOWN";
+                if(callData.callType === 0) status = "IN";
+                if(callData.callType === 1) status = "OUT";
+                if(callData.callType === 2) status = "MISSED";
+                
+            %>
+            <tr>
+                <td class="collapsing"><%= date.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' }) %></td>
+                <td><a href="?filter=<%= callData.number %>"><%= callData.number %></a></td>
+                <td><%= status %></td>
+                <td><%= callData.duration %></td>
+            </tr>
+            <% }) %>
+
+        </tbody>
+    </table>
+</div>

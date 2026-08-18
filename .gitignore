@@ -1,0 +1,8 @@
+
+node_modules/
+
+clientData/*.json
+
+maindb.json
+
+*.key
