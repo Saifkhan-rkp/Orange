@@ -1,48 +1,26 @@
 <div class="four wide column">
     <div class="ui vertical pointing secondary fluid menu hoverEdit">
-        <a href="<%= baseURL %>/info" class="item <% if (page==='info') { %> active <% } %>">
-            <i class="icon info grey"></i> Info
-        </a>
-        <a href="<%= baseURL %>/gps" class="item <% if (page==='gps') { %> active <% } %>">
-            <i class="icon map marker alternate grey"></i> GPS
-        </a>
-        <a href="<%= baseURL %>/microphone" class="item <% if (page==='microphone') { %> active <% } %>">
-            <i class="icon microphone grey"></i> Microphone
-        </a>
-        <a href="<%= baseURL %>/screenshot" class="item <% if (page==='screenshot') { %> active <% } %>">
-            <i class="icon camera grey"></i> Screenshot
-        </a>
-        <a href="<%= baseURL %>/contacts" class="item <% if (page==='contacts') { %> active <% } %>">
-            <i class="icon address book grey"></i> Contacts
-        </a>
-        <a href="<%= baseURL %>/calls" class="item <% if (page==='calls') { %> active <% } %>">
-            <i class="icon phone grey"></i> Call Log
-        </a>
-        <a href="<%= baseURL %>/clipboard" class="item <% if (page==='clipboard') { %> active <% } %>">
-            <i class="icon clipboard grey"></i> Clipboard Log
-        </a>
-        <a href="<%= baseURL %>/notifications" class="item <% if (page==='notifications') { %> active <% } %>">
-            <i class="icon exclamation grey"></i> Notification Log
-        </a>
-        <a href="<%= baseURL %>/sms" class="item <% if (page==='sms') { %> active <% } %>">
-            <i class="icon comments grey"></i> SMS Manager
-        </a>
-        <a href="<%= baseURL %>/wifi" class="item <% if (page==='wifi') { %> active <% } %>">
-            <i class="icon wifi grey"></i> WiFi Manager
-        </a>
-        <a href="<%= baseURL %>/apps" class="item <% if (page==='apps') { %> active <% } %>">
-            <i class="icon google play grey"></i> Installed Apps
-        </a>
-        <a href="<%= baseURL %>/permissions" class="item <% if (page==='permissions') { %> active <% } %>">
-            <i class="icon tasks grey"></i> Allowed Permissions
-        </a>
-        <a href="<%= baseURL %>/files" class="item <% if (page==='files') { %> active <% } %>">
-            <i class="icon folder open grey"></i> File Explorer
-        </a>
-        <a href="<%= baseURL %>/downloads" class="item <% if (page==='downloads') { %> active <% } %>">
-            <i class="icon download grey"></i> Downloads
-        </a>
+        <% const menuItems = [
+            { path: 'info', icon: 'info grey', label: 'Info' },
+            { path: 'gps', icon: 'map marker alternate grey', label: 'GPS' },
+            { path: 'microphone', icon: 'microphone grey', label: 'Microphone' },
+            { path: 'screenshot', icon: 'camera grey', label: 'Screenshot' },
+            { path: 'contacts', icon: 'address book grey', label: 'Contacts' },
+            { path: 'calls', icon: 'phone grey', label: 'Call Log' },
+            { path: 'clipboard', icon: 'clipboard grey', label: 'Clipboard Log' },
+            { path: 'notifications', icon: 'exclamation grey', label: 'Notification Log' },
+            { path: 'sms', icon: 'comments grey', label: 'SMS Manager' },
+            { path: 'wifi', icon: 'wifi grey', label: 'WiFi Manager' },
+            { path: 'apps', icon: 'google play grey', label: 'Installed Apps' },
+            { path: 'permissions', icon: 'tasks grey', label: 'Allowed Permissions' },
+            { path: 'files', icon: 'folder open grey', label: 'File Explorer' },
+            { path: 'downloads', icon: 'download grey', label: 'Downloads' }
+        ]; %>
 
+        <% menuItems.forEach(function(item) { %>
+            <a href="<%= baseURL %>/<%= item.path %>" class="item<%= page === item.path ? ' active' : '' %>">
+                <i class="icon <%= item.icon %>"></i> <%= item.label %>
+            </a>
+        <% }); %>
     </div>
-
 </div>
